@@ -1,0 +1,22 @@
+services:
+  support-bot:
+    build: .
+    container_name: oxygen-support-container
+    restart: always
+    environment:
+      - TZ=Europe/Moscow
+      # Данные для подключения к базе RemnaWave
+      - PG_HOST=remnawave_bot_db
+      - PG_DB=remnawave_bot
+      - PG_USER=remnawave_user
+      - PG_PASS=secure_password_123
+    volumes:
+      - ./:/app
+      - /opt/backups_archive:/backups_archive:ro
+    networks:
+      - oxygen_to_remna_link
+
+networks:
+  oxygen_to_remna_link:
+    external: true
+    name: remnawave-bedolaga-telegram-bot_bot_network
