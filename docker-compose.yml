@@ -1,22 +1,19 @@
 services:
   support-bot:
     build: .
-    container_name: oxygen-support-container
+    container_name: remnawave-support-bot
     restart: always
-    # ВОТ ЭТА СТРОЧКА — ГЛАВНАЯ:
     env_file:
       - .env
     environment:
       - TZ=Europe/Moscow
-      # Эти строки ниже можно удалить, так как они теперь есть в .env
-      # Но если оставишь — они просто перекроют значения из .env
     volumes:
       - ./:/app
       - /opt/backups_archive:/backups_archive:ro
     networks:
-      - oxygen_to_remna_link
+      - remnawave_network
 
 networks:
-  oxygen_to_remna_link:
+  remnawave_network:
     external: true
-    name: remnawave-bedolaga-telegram-bot_bot_network
+    name: ${EXTERNAL_NETWORK_NAME:-remnawave_default}
