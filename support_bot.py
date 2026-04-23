@@ -11,6 +11,7 @@ import psycopg2 # Драйвер для Postgres
 
 # --- КОНФИГУРАЦИЯ ---
 
+PROJECT_NAME = os.getenv('PROJECT_NAME', 'VPN Support')
 TOKEN = os.getenv('TELEGRAM_TOKEN')
 ADMIN_GROUP_ID = int(os.getenv('ADMIN_GROUP_ID', '0'))
 BANS_TOPIC_ID = int(os.getenv('BANS_TOPIC_ID', '1'))
@@ -115,8 +116,7 @@ def get_admin_buttons(user_id):
 def handle_start(message):
     row = run_query("SELECT is_banned FROM users WHERE uid=?", (message.from_user.id,), fetch=True)
     if row and row[0] == 1: return bot.send_message(message.chat.id, "❌ Доступ закрыт.")
-    bot.send_message(message.chat.id, "👋 Oxygen Support. Нажмите кнопку ниже для связи.", reply_markup=get_main_menu())
-
+    bot.send_message(message.chat.id, f"👋 {PROJECT_NAME}. Нажмите кнопку ниже для связи.", reply_markup=get_main_menu())
 @bot.message_handler(content_types=['text', 'photo', 'video', 'document', 'voice'], func=lambda m: m.chat.type == 'private')
 def handle_private(message):
     uid = message.from_user.id
