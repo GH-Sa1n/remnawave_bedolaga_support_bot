@@ -3,13 +3,13 @@ services:
     build: .
     container_name: oxygen-support-container
     restart: always
+    # ВОТ ЭТА СТРОЧКА — ГЛАВНАЯ:
+    env_file:
+      - .env
     environment:
       - TZ=Europe/Moscow
-      # Данные для подключения к базе RemnaWave
-      - PG_HOST=remnawave_bot_db
-      - PG_DB=remnawave_bot
-      - PG_USER=remnawave_user
-      - PG_PASS=secure_password_123
+      # Эти строки ниже можно удалить, так как они теперь есть в .env
+      # Но если оставишь — они просто перекроют значения из .env
     volumes:
       - ./:/app
       - /opt/backups_archive:/backups_archive:ro
